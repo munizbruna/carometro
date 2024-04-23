@@ -1,5 +1,4 @@
 // models/Usuario.js
-
 const Sequelize = require('sequelize');
 const sequelize = require('../config/sequilize');
 
