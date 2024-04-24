@@ -23,7 +23,7 @@ const Usuario = sequelize.define('Usuarios', {
   estado: Sequelize.STRING,
   imagem: Sequelize.STRING,
   Tipos_Usuarios_idTipos_Usuarios: Sequelize.NUMBER,
-
+ 
 },    
 {   
   //precisa disso pq nao tem as colunas createdAt e updatedAt no bd

@@ -7,12 +7,14 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
     //no router id é o que vem depois do usuario/
     const idDoParam = req.params.id;
-    const usuarioEncontrado = await Usuario.findOne({ idUsuarios:idDoParam });
+    const usuarioEncontrado = await Usuario.findOne({ idUsuarios: idDoParam });
     res.json(usuarioEncontrado)
 };
 
 exports.createUsuario = async (req, res) => {
-    const usuarioCadastrado = await Usuario.findOne({ cpf: req.body.cpf });
+    console.log("req.body.cpf", req.body.cpf)
+
+    const usuarioCadastrado = await Usuario.findOne({ where: { cpf: req.body.cpf } });
     //verificacao duplicidade  de usuario cadasrtado
     if (usuarioCadastrado) {
         return res.send('Já existe um usuario cadastrado neste CPF.')
@@ -20,6 +22,6 @@ exports.createUsuario = async (req, res) => {
 
     const usuarioCriado = await Usuario.create(req.body)
     console.log("usuarioCriado", usuarioCriado)
-    return res.send("oi")
+    return res.send("Usuário Cadastrado")
     // res.json(usuarios)
 };
