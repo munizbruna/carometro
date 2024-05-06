@@ -1,0 +1,22 @@
+//params = parametro, explicitos na URL
+//body = obj da requisição que não vai explicito (aparece no inspecionar)
+
+exports.pesquisar = async (req, res) => {
+    //no router id é o que vem depois do usuario/
+    /* const {tipoPesquisa, itemPesquisa} = req.body */
+
+    const tipoPesquisado = req.params.tipoPesquisado;
+    const itemPesquisado = req.params.itemPesquisado;
+    if (
+        tipoPesquisado === 1 //requer contrato com o front para definir o que vira no input 
+    ) {
+        //busca na turma o nome
+    }
+    if (
+        tipoPesquisado === 2
+    ) {
+        //busca nos alunos o nome
+    }
+    const usuarioEncontrado = await Usuario.findOne({ where: { idUsuarios: idDoParam } });
+    res.json(usuarioEncontrado)
+};
