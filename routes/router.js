@@ -23,11 +23,11 @@ router.delete('/usuarios', usuarioController.deleteAll);
 router.post('/usuario', usuarioController.createUsuario)
 
 //////////////         R O T A S    tipos         \\\\\\\\\\\\\\\\\\
-
+/* 
 router.get('/tipos', tiposController.getAll)
-router.get('//:id', tiposController.getById)
+router.get('/:id', tiposController.getById)
 
-router.post('/tipos', tiposController.createTipoUsuario)
+router.post('/tipos', tiposController.createTipoUsuario) */
 
 //////////////         R O T A S    turmas         \\\\\\\\\\\\\\\\\\
 

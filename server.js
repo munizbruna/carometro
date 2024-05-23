@@ -2,6 +2,7 @@
 const express = require('express');
 const sequelize = require('./config/sequilize')
 const router = require('./routes/router');
+const path = require('path');
 require('dotenv').config();
 
 
@@ -34,6 +35,7 @@ const app = express();
 app.use(express.json())
 app.use(router);
 
+
 //app.use(cookie-parser)
 
 
@@ -41,8 +43,12 @@ app.use(router);
 const PORT = process.env.PORT || 3000;
 
 // Iniciar o servidor e ouvir a porta especificada
-app.listen(PORT, () => {
-    console.log(`Servidor Express iniciado na porta ${PORT}`);
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
 

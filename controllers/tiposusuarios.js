@@ -1,9 +1,17 @@
 const TipoUsuario = require('../models/tipos_usuarios');
 
 exports.getAll = async (req, res) => {
-    const tipoUsuario = await TipoUsuario.findAll();
-    res.json(tipoUsuario)
+    try {
+        const tiposUsuarios = await TipoUsuario.findAll({
+            attributes: ['idTipoUsuario', 'descricao']  // Seleciona apenas os campos necessários
+        });
+        res.json(tiposUsuarios);
+    } catch (error) {
+        console.error('Erro ao buscar tipos de usuários:', error);
+        res.status(500).send({ error: 'Erro ao buscar tipos de usuários' });
+    }
 };
+
 
 exports.getById = async (req, res) => {
     //no router id é o que vem depois do usuario/
