@@ -15,6 +15,9 @@ const turmasController = require('../controllers/turmas');
 //retorna todos usuarios
 router.get('/usuario', usuarioController.getAll)
 router.get('/usuario/:id', usuarioController.getById)
+//deleta usuario
+router.delete('/usuario/:id', usuarioController.deleteUsuario);
+router.delete('/usuarios', usuarioController.deleteAll);
 
 //cria um usuario ptiposassando informação no body
 router.post('/usuario', usuarioController.createUsuario)

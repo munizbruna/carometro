@@ -5,7 +5,7 @@ exports.getAll = async (req, res) => {
 };
 
 exports.getById = async (req, res) => {
-    //no router id é o que vem depois do usuario/
+//no router id é o que vem depois do usuario/
     const idDoParam = req.params.id;
     const usuarioEncontrado = await Usuario.findOne({ where: { idUsuarios: idDoParam } });
     res.json(usuarioEncontrado)
