@@ -13,27 +13,43 @@ exports.getById = async (req, res) => {
 
 // CRIAÇÃO DE USUARIO
 exports.createUsuario = async (req, res) => {
+    const usuarioCadastrado = await Usuario.findOne({ where: { cpf: req.body.cpf } });
 
-            const usuarioCadastrado = await Usuario.findOne({ where: { cpf: req.body.cpf } });
-//verificacao duplicidade  de usuario cadasrtado
-            if (usuarioCadastrado) {
-                return res.send('Já existe um usuario cadastrado neste CPF.')
-            }
-
-            const usuarioCriado = await Usuario.create(req.body)
-    console.log("usuarioCriado", usuarioCriado)
-    if (usuarioCriado.id) {
-                await UsuariosTurmas.create({
-                    
-            Usuarios_idUsuarios: usuarioCriado.id,
-            Turmas_idTurmas: req.body.idturma //idturma vem do front como informação de seleçaõ de turma
-        })
-
-
+    // Verificação de duplicidade de usuário cadastrado
+    if (usuarioCadastrado) {
+        return res.send('Já existe um usuário cadastrado neste CPF.');
     }
-    return res.send("Usuário Cadastrado")
-    // res.json(usuarios)
+
+    // Aqui você pode acessar o caminho do arquivo enviado junto com outros dados
+    const filePath = req.body.filePath;
+
+    // Crie um objeto para armazenar os dados do usuário, incluindo o caminho do arquivo
+    const userData = {
+        // Adicione outros campos conforme necessário
+        nome: req.body.nome,
+        email: req.body.email,
+        filePath: filePath // Adicione o caminho do arquivo
+    };
+
+    try {
+        // Crie o usuário com os dados fornecidos
+        const usuarioCriado = await Usuario.create(userData);
+
+        // Se o usuário for criado com sucesso, crie uma entrada na tabela de UsuariosTurmas
+        if (usuarioCriado.id) {
+            await UsuariosTurmas.create({
+                Usuarios_idUsuarios: usuarioCriado.id,
+                Turmas_idTurmas: req.body.idturma // idturma vem do front como informação de seleção de turma
+            });
+        }
+
+        return res.send("Usuário Cadastrado");
+    } catch (error) {
+        console.error("Erro ao cadastrar usuário:", error);
+        return res.status(500).send("Erro ao cadastrar usuário.");
+    }
 };
+
 
 //update
 exports.updateUsuario = async (req, res) => {

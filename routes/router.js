@@ -8,7 +8,7 @@ const router = express.Router();
 const usuarioController = require('../controllers/usuario');
 const tiposController = require('../controllers/tiposusuarios');
 const turmasController = require('../controllers/turmas');
-
+const { handleFileUpload } = require('../controllers/uploadController');
 
 //////////////         R O T A S    U S U A R I O S         \\\\\\\\\\\\\\\\\\
 
@@ -16,11 +16,15 @@ const turmasController = require('../controllers/turmas');
 router.get('/usuario', usuarioController.getAll)
 router.get('/usuario/:id', usuarioController.getById)
 //deleta usuario
-router.delete('/usuario/:id', usuarioController.deleteUsuario);
-router.delete('/usuarios', usuarioController.deleteAll);
+/* router.delete('/usuario/:id', usuarioController.deleteUsuario);
+router.delete('/usuarios', usuarioController.deleteAll); */
 
 //cria um usuario ptiposassando informação no body
 router.post('/usuario', usuarioController.createUsuario)
+
+
+// Defina a rota para o upload de arquivo
+router.post('/upload', handleFileUpload);
 
 //////////////         R O T A S    tipos         \\\\\\\\\\\\\\\\\\
 /* 

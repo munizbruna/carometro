@@ -1,35 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário</title>
-    <!-- Script para buscar tipos de usuários, se necessário -->
-    <!-- <script>
-        async function fetchTipoUsuarios() {
-            try {
-                const response = await fetch('/tipos');
-                const tiposUsuarios = await response.json();
-                const select = document.getElementById('idTiposUsuarios');
-                
-                tiposUsuarios.forEach(tipo => {
-                    const option = document.createElement('option');
-                    option.value = tipo.idTipos_Usuarios; // Supondo que o campo de ID é 'id'
-                    option.text = tipo.descricao; // Supondo que o campo de nome é 'nome'
-                    select.add(option);
-                });
-            } catch (error) {
-                console.error('Erro ao buscar tipos de usuários:', error);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchTipoUsuarios);
-    </script> -->
+    <title>Document</title>
 </head>
+
 <body>
     <h1>Cadastro de Usuário</h1>
-    <form id="usuarioForm">
-        <!-- Outros campos -->
+    <form id="usuarioForm" enctype="text/plain">
+
         <div>
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
@@ -74,52 +55,58 @@
             <label for="tiposUsuarios">Estado:</label>
             <input type="number" id="idTiposUsuarios" name="idTiposUsuarios" required>
         </div>
-        <div>
-            <label for="imagem">Imagem:</label>
-            <input type="file" id="imagem" name="imagem" accept="image/*" required>
+        <button type="submit" id="cadastrarButton">Cadastrar</button>
+    </form>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Envie aqui sua foto</label>
+        <input type="file" name="image" id="image" accept="image/*">
+        <button type="submit">Enviar</button>
+        <div id="response" style="display: none;">
+            <p>Informações salvas em: </p>
         </div>
-        
-        <button type="submit">Cadastrar</button>
     </form>
 
     <script>
-        document.getElementById('usuarioForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            const form = e.target;
-            const formData = new FormData();
+    const formData = new FormData();
+    const imageFile = document.getElementById('image').files[0];
+    formData.append('image', imageFile);
 
-            // Adiciona o arquivo ao FormData
-            formData.append('imagem', form.imagem.files[0]);
+    console.log('Enviando requisição para /upload...');
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log('Resposta recebida:', response);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Dados recebidos:', data);
+        const responseDiv = document.getElementById('response');
+        responseDiv.style.display = 'block'; // Torna a div visível
 
-            // Adiciona os dados JSON ao FormData
-            const data = {
-                nome: form.nome.value,
-                email: form.email.value,
-                cpf: form.cpf.value,
-                senha: form.senha.value,
-                celular: form.celular.value,
-                cep: form.cep.value,
-                logradouro: form.logradouro.value,
-                bairro: form.bairro.value,
-                cidade: form.cidade.value,
-                estado: form.estado.value,
-                idTiposUsuarios: form.idTiposUsuarios.valeu,
-            };
-            formData.append('data', JSON.stringify(data));
+        if (data.filePath) {
+            responseDiv.innerHTML = `<h2>Arquivo enviado com sucesso!</h2><p>Caminho do arquivo: <a href="${data.filePath}">${data.filePath}</a></p>`;
 
-            try {
-                const response = await fetch('/usuario', {
-                    method: 'POST',
-                    body: formData
-                });
+            // Exibir mensagem de sucesso por alguns segundos e depois limpar a mensagem
+            setTimeout(() => {
+                responseDiv.innerHTML = '';
+            }, 5000); // 5000 milissegundos = 5 segundos
+        } else {
+            responseDiv.innerHTML = `<h2>Erro ao enviar o arquivo.</h2>`;
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao enviar requisição:', error);
+        document.getElementById('response').innerHTML = `<h2>Erro ao enviar o arquivo.</h2>`;
+    });
+});
 
-                const result = await response.json();
-                console.log('Success:', result);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
     </script>
+
 </body>
+
 </html>
