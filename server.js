@@ -3,6 +3,7 @@ const express = require('express');
 const sequelize = require('./config/sequilize');
 const router = require('./routes/router'); // Importe o módulo de rotas
 const path = require('path');
+const usuarioRoutes = require('./routes/usuarios');
 
 require('dotenv').config();
 
@@ -29,11 +30,13 @@ app.use(express.json());
 // Use o módulo de rotas como middleware principal
 app.use(router);
 
+app.use('/api', usuarioRoutes);
+
 // Configura o servidor para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota para servir a página HTML de upload
-app.get('/', (req, res) => {
+app.get('/testes', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -43,4 +46,19 @@ const PORT = process.env.PORT || 3000;
 // Iniciar o servidor e ouvir a porta especificada
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
+
+// Define o diretório onde os arquivos estáticos do front-end estão localizados
+const frontEndPath = path.join(__dirname, 'src');
+
+// Configura o Express.js para servir os arquivos estáticos
+app.use(express.static(frontEndPath));
+
+// Rota para servir a página login
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(frontEndPath, 'login.html'));
+});
+// Rota para servir a página cadastro
+app.get('/cadastro', (req, res) => {
+    res.sendFile(path.join(frontEndPath, 'cadastroUsuarios.html'));
 });
