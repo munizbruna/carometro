@@ -18,8 +18,13 @@ const { handleFileUpload } = require('../controllers/uploadController');
 router.delete('/usuarios', usuarioController.deleteAll); */
 
 //cria um usuario ptiposassando informação no body
+// Rota para obter todos os usuários
+router.get('/usuarios', usuarioController.getAll);
 
+// Rota para obter um usuário pelo ID
+router.get('/usuarios/:id', usuarioController.getById);
 
+router.post('/cadastrar-usuario', usuarioController.createUsuario);
 
 // Defina a rota para o upload de arquivo
 router.post('/upload', handleFileUpload);
@@ -29,10 +34,10 @@ router.post('/upload', handleFileUpload);
 router.get('/tipos', tiposController.getAll)
 router.get('/:id', tiposController.getById)
 
+
 router.post('/tipos', tiposController.createTipoUsuario) */
 
-//////////////         R O T A S    turmas         \\\\\\\\\\\\\\\\\\
-
+//////////////         R O T A S    turmas         \\\\\\\\\\\\\\\\\\7
 router.get('/turma', turmasController.getAll)
 router.get('/turma/:id', turmasController.getById)
 

@@ -30,8 +30,6 @@ app.use(express.json());
 // Use o módulo de rotas como middleware principal
 app.use(router);
 
-app.use('/api', usuarioRoutes);
-
 // Configura o servidor para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
